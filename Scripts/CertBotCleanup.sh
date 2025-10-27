@@ -34,7 +34,8 @@ fi
 
 nslookup "$CERTBOT_DOMAIN" &> /dev/null || Panic "$CERTBOT_DOMAIN is not a valid DNS entry"
 CheckAcmeTxtRecordExists || Panic "$CREATE_DOMAIN is not a valid DNS entry"
-heracles search "$CREATE_DOMAIN" > hydra_delete.txt
+echo "$CREATE_DOMAIN" | heracles search > hydra_delete.txt
+grep "USAGE" hydra_delete.txt && Panic "Hydra record not found"
 RECORD_COUNT=$(cat hydra_delete.txt | tr -cd '{' | wc -c)
 if [ "$RECORD_COUNT" -ne 1 ]; then
 	Panic "Attempted to delete multiple Hydra records"
