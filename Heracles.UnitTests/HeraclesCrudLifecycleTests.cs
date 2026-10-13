@@ -13,7 +13,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void CrudLifecycleTest()
+        public async Task CrudLifecycleTest()
         {
         
             // Want to test the vaild use cases in a single CRUD chain that runs separately
@@ -21,7 +21,7 @@ namespace Heracles.UnitTests
 
             Heracles.Lib.Record r = new()
             {
-                Hostname = "_acme-challenge.heracles-unit-testing.imm.ox.ac.uk",
+                Hostname = Fixture.Cihost,
                 Content = "WinACME Test",
                 Type = "TXT"
             };

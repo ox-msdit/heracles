@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void SearchWithInvalidCredentialsThrowsHttpRequestException()
+        public async Task SearchWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Search("_acme-challenge");
@@ -22,7 +22,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void SearchWithValidSubstringReturnsValidResult()
+        public async Task SearchWithValidSubstringReturnsValidResult()
         {
             //Act
             List<Heracles.Lib.Record> results = await Fixture.ValidHydraClient.Search("_acme-challenge");
@@ -33,7 +33,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void SearchWithInvalidSubstringReturnsEmptyResult()
+        public async Task SearchWithInvalidSubstringReturnsEmptyResult()
         {
             //Act
             List<Heracles.Lib.Record> results = await Fixture.ValidHydraClient.Search("willnevermatch");
@@ -46,7 +46,7 @@ namespace Heracles.UnitTests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public async void SearchWithValidLimitReturnsValidResult(int x)
+        public async Task SearchWithValidLimitReturnsValidResult(int x)
         {
             //Act
             List<Heracles.Lib.Record> results = await Fixture.ValidHydraClient.Search("_acme-challenge", x);
@@ -59,7 +59,7 @@ namespace Heracles.UnitTests
         [Theory]
         [InlineData(0)]
         [InlineData(500001)]
-        public async void SearchWithInvalidLimitThrowsArgumentOutOfRangeExceptionException(int x)
+        public async Task SearchWithInvalidLimitThrowsArgumentOutOfRangeExceptionException(int x)
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Search("_acme-challenge", x);

@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void LoopJsonRecordsWithRecordAndSafeModeAndInvalidClientReturnsHttpRequestExeption()
+        public async Task LoopJsonRecordsWithRecordAndSafeModeAndInvalidClientReturnsHttpRequestExeption()
         {
             //Arrange
             string json = $"[{Lib.RecordHelpers.RecordToJson(Fixture.DummyRecord)}]";
@@ -25,7 +25,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void LoopJsonRecordsWithRecordListAndSafeModeAndInvalidClientThrowsInvalidDataException()
+        public async Task LoopJsonRecordsWithRecordListAndSafeModeAndInvalidClientThrowsInvalidDataException()
         {
             //Arrange
             string json = Lib.RecordHelpers.RecordListToJson(Fixture.DummyRecordList);
@@ -51,7 +51,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void LoopJsonRecordsWithRecordListAndNoSafeModeAndInvalidClientReturnsHttpRequestExeption()
+        public async Task LoopJsonRecordsWithRecordListAndNoSafeModeAndInvalidClientReturnsHttpRequestExeption()
         {
             //Arrange
             string json = Lib.RecordHelpers.RecordListToJson(Fixture.DummyRecordList);

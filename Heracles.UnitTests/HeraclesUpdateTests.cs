@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void UpdateWithInvalidCredentialsThrowsHttpRequestException()
+        public async Task UpdateWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Update(Fixture.DummyRecord);
@@ -22,7 +22,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void UpdateWithNonExistantRecordThrowsHttpRequestException()
+        public async Task UpdateWithNonExistantRecordThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Update(Fixture.DummyRecord);
@@ -32,7 +32,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void UpdateWithValidRecordNoIdThrowsArgumentNullException()
+        public async Task UpdateWithValidRecordNoIdThrowsArgumentNullException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Update(Fixture.DummyRecordNoId);

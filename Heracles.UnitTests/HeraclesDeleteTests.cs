@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void DeleteWithInvalidCredentialsThrowsHttpRequestException()
+        public async Task DeleteWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Delete(Fixture.DummyRecord);
@@ -22,7 +22,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void DeleteWithNonExistantRecordThrowsHttpRequestException()
+        public async Task DeleteWithNonExistantRecordThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Delete(Fixture.DummyRecord);
@@ -32,7 +32,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void DeleteWithValidRecordNoIdThrowsArgumentNullException()
+        public async Task DeleteWithValidRecordNoIdThrowsArgumentNullException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Delete(Fixture.DummyRecordNoId);

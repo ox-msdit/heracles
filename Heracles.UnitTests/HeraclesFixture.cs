@@ -7,6 +7,7 @@ namespace Heracles.UnitTests
 
         private readonly string? uri;
         private readonly string? credentials;
+        public readonly string? Cihost;
         public HydraClient ValidHydraClient { get; }
         public HydraClient InvalidHydraClient { get; }
         public Heracles.Lib.Record DummyRecord = new()
@@ -34,6 +35,8 @@ namespace Heracles.UnitTests
             ArgumentNullException.ThrowIfNull(credentials);
             uri = Environment.GetEnvironmentVariable("HYDRA_URI");
             ArgumentNullException.ThrowIfNull(uri);
+            Cihost = Environment.GetEnvironmentVariable("HYDRA_CI_HOST");
+            ArgumentNullException.ThrowIfNull(Cihost);
             ValidHydraClient = new(uri, credentials);
             InvalidHydraClient = new(uri, "notvalidcredentials");
         }

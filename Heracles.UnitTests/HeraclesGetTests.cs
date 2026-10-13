@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void GetWithInvalidCredentialsThrowsHttpRequestException()
+        public async Task GetWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Get(Fixture.DummyRecord);
@@ -22,7 +22,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void GetWithNonExistantRecordThrowsHttpRequestException()
+        public async Task GetWithNonExistantRecordThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecord);
@@ -32,7 +32,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void GetWithValidRecordNoIdThrowsArgumentNullException()
+        public async Task GetWithValidRecordNoIdThrowsArgumentNullException()
         {
             //Act
             Task result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecordNoId);
@@ -42,7 +42,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void GetWithValidRecordReturnsCopy()
+        public async Task GetWithValidRecordReturnsCopy()
         {
             //Arrange
             List<Heracles.Lib.Record> results = await Fixture.ValidHydraClient.Search("", 1);

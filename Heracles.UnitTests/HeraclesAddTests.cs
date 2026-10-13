@@ -12,7 +12,7 @@ namespace Heracles.UnitTests
         }
 
         [Fact]
-        public async void AddWithInvalidCredentialsThrowsHttpRequestException()
+        public async Task AddWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
             Task result() => Fixture.InvalidHydraClient.Add(Fixture.DummyRecordNoId);
