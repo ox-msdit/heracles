@@ -22,8 +22,15 @@
 #
 # - Handle multi-domain certificate requests
 
-RESOLVERS=("1.1.1.1" "8.8.8.8" "9.9.9.9" "208.67.222.222")
+DNS_SERVERS=("129.67.1.1" "129.67.1.180" "163.1.2.1" "1.1.1.1" "8.8.8.8" "9.9.9.9" "208.67.222.222")
+LOGFILE="/var/log/HeraclesCertBotAuth.log"
+date > "$LOGFILE"
+chmod 600 "$LOGFILE"
+exec 3>>"$LOGFILE"
+BASH_XTRACEFD=3
+set -x
 
+DNS_UPDATE_DELAY=900
 CREATE_DOMAIN="_acme-challenge.$CERTBOT_DOMAIN"
 HERACLES_STDIN="[{ \"comment\": \"WinAcme\", \"content\": \"$CERTBOT_VALIDATION\", \"hostname\": \"$CREATE_DOMAIN.\", \"type\": \"TXT\" }]"
 
@@ -37,56 +44,54 @@ CheckBin () {
 }
 
 CheckAcmeTxtRecordExists () {
-	RES=$(dig +noall +answer TXT "$CREATE_DOMAIN")
-	if [[ -z $RES ]]; then
-		return 1
-	else
-		return 0
-	fi
+	for DNS_SERVER in "${DNS_SERVERS[@]}"; do
+		RES=$(dig @$DNS_SERVER  +noall +answer TXT "$CREATE_DOMAIN")
+		if [[ -z $RES ]]; then
+			return 1
+		fi
+	done
+	return 0
 }
 
-CheckAcmeTxtRecordPropagated () {
-	local resolver_up=0
-	for ((idx=${#RESOLVERS[@]}-1; idx>=0; idx--)); do
-		resolver="${RESOLVERS[$idx]}"
-		if ! dig +tries=1 +time=2 @"${resolver}" . NS >/dev/null 2>&1; then
-			continue
+CheckAcmeTxtRecordRemoved () {
+	for DNS_SERVER in "${DNS_SERVERS[@]}"; do
+		RES=$(dig @$DNS_SERVER  +noall +answer TXT "$CREATE_DOMAIN")
+		if [[ -n $RES ]]; then
+			return 1
 		fi
-		resolver_up=1
-        result=$(dig +short TXT "${CREATE_DOMAIN}" @"${resolver}" | tr -d '"')
-		if [[ "$result" != *"$CERTBOT_VALIDATION"* ]]; then
-            return 1  # fail
-        else
-            # Don't need to ping this resolver again.
-			unset 'RESOLVERS[idx]'
-        fi
-    done
-	if [[ $resolver_up -eq 0 ]]; then
-        # No resolvers reachable
-		return 1
-	fi
-	return 0  # success
+	done
+	return 0
 }
 
 GetAcmeTxtRecordContents () {
 	dig +noall +answer TXT "$CREATE_DOMAIN" | cut -d '"' -f 2
 }
 
-DoCheck () {
+DoCheckCreate () {
 	sleep 60
-	CheckAcmeTxtRecordPropagated || (echo "Record not yet in DNS" && DoCheck)
+	CheckAcmeTxtRecordExists || (echo "Record not yet in DNS" && DoCheckCreate)
 	CURRENT=$(GetAcmeTxtRecordContents)
 	if [ "$CURRENT" != "$CERTBOT_VALIDATION" ]; then
 		echo "$CURRENT != $CERTBOT_VALIDATION"
-		DoCheck
+		DoCheckCreate
 	fi
 }
 
-DoCreate () {
-	CheckAcmeTxtRecordPropagated && Panic "Stale ACME record for host found in DNS"
-	CheckAcmeTxtRecordPropagated || (echo "$HERACLES_STDIN" | heracles add    || Panic "Hydra DNS update failed")
-	DoCheck
+DoCheckDelete () {
 	sleep 60
+	CheckAcmeTxtRecordRemoved || (echo "Record still in DNS" && DoCheckDelete)
+}
+
+DoCleanup () {
+	CertBotCleanup.sh $CERTBOT_DOMAIN || Panic "Hydra DNS delete failed"
+	DoCheckDelete
+}
+
+DoCreate () {
+	CheckAcmeTxtRecordExists && DoCleanup
+	CheckAcmeTxtRecordExists && Panic "Hydra stale DNS record found"
+	echo "$HERACLES_STDIN" | heracles add || Panic "Hydra DNS update failed"
+	DoCheckCreate
 }
 
 CheckBin dig

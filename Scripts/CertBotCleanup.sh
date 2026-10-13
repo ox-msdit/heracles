@@ -1,11 +1,26 @@
 #!/bin/bash
 
-CREATE_DOMAIN="_acme-challenge.$CERTBOT_DOMAIN"
+LOGFILE="/var/log/HeraclesCertBotCleanup.log"
+date > "$LOGFILE"
+chmod 600 "$LOGFILE"
+exec 3>>"$LOGFILE"
+BASH_XTRACEFD=3
+set -x
+
+if [ -z $CERTBOT_DOMAIN ] && [ -n $1 ]; then
+	CERTBOT_DOMAIN=$1
+fi
 
 Panic () {
 	echo "$1"
 	exit 1
 }
+
+if [ -z $CERTBOT_DOMAIN ]; then
+	Panic "No domain defined"
+fi
+
+CREATE_DOMAIN="_acme-challenge.$CERTBOT_DOMAIN"
 
 CheckBin () {
 	which "$1" &>/dev/null || Panic "Cannot find executable $1"
