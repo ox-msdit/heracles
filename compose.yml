@@ -1,0 +1,15 @@
+services:
+  build:
+    build: .
+    image: heracles-build
+
+  export:
+    image: heracles-build
+    depends_on:
+      - build
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/output
+    command:
+      - sh
+      - -c
+      - cp /publish/heracles /output/heracles

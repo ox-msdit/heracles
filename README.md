@@ -143,13 +143,24 @@ $ heracles search _acme-challenge.foo
 
 # Compiling
 
-`heracles` can be compilied to a native executable anywhere the DotNet 8 SDK is available.
+`heracles` can be compilied to a native executable anywhere the DotNet 10 SDK is available.
 
-1. Install the DotNet 8 SDK. See https://dotnet.microsoft.com/en-us/download for full details.
-   - Windows: `winget install Microsoft.DotNet.SDK.8`
-   - Ubuntu: `apt install dotnet-sdk-8.0`
+1. Install the DotNet 10 SDK. See https://dotnet.microsoft.com/en-us/download for full details.
+   - Windows: `winget install Microsoft.DotNet.SDK.10`
+   - Ubuntu: `apt install dotnet-sdk-10.0`
    - Mac: `brew install dotnet-sdk`
 2. Install the necessary compiler tools for your platform. See https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/#prerequisites for full details.
 3. `dotnet publish`
 
-This will create a native executable for the OS and architecture the code was compiled on, in the folder `Heracles.Console\bin\Release\net8.0\{os}-{arch}\publish\`. The `.pdb` debugging files can be ignored.
+This will create a native executable for the OS and architecture the code was compiled on, in the folder `Heracles.Console\bin\Release\net10.0\{os}-{arch}\publish\`. The `.pdb` debugging files can be ignored.
+
+## Compiling a static Linux executable
+
+A fully static Linux executable can be compiled using Docker, without installing the .NET SDK or compiler tools locally. The resulting binary has no glibc dependency and is tested against Ubuntu 18.04 and later.
+
+1. Install Docker with the Compose plugin.
+2. Run `docker compose build && docker compose run --rm export`.
+
+The executable will be written to `Heracles.Console/Binaries/Linux-x64/heracles`.
+
+The Dockerfile uses .NET 10 Native AOT with musl and invariant globalization to produce a statically linked x86-64 executable.
