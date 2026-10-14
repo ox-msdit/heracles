@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Heracles.UnitTests
 {
 
@@ -18,10 +20,11 @@ namespace Heracles.UnitTests
             string json = $"[{Lib.RecordHelpers.RecordToJson(Fixture.DummyRecord)}]";
 
             //Act
-            Task result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
+            Task Result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
         }
 
         [Fact]
@@ -31,10 +34,10 @@ namespace Heracles.UnitTests
             string json = Lib.RecordHelpers.RecordListToJson(Fixture.DummyRecordList);
 
             //Act
-            Task result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
+            Task Result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
 
             //Assert
-            await Assert.ThrowsAsync<InvalidDataException>(result);
+            await Assert.ThrowsAsync<InvalidDataException>(Result);
         }
 
     }
@@ -55,14 +58,15 @@ namespace Heracles.UnitTests
         {
             //Arrange
             string json = Lib.RecordHelpers.RecordListToJson(Fixture.DummyRecordList);
-            System.Environment.SetEnvironmentVariable("HYDRA_UNSAFE", "true");
+            Environment.SetEnvironmentVariable("HYDRA_UNSAFE", "true");
 
             //Act
-            Task result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
+            Task Result() => Console.Helpers.LoopJsonRecords(json, Fixture.InvalidHydraClient.Get, true);
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
-            System.Environment.SetEnvironmentVariable("HYDRA_UNSAFE", null);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
+            Environment.SetEnvironmentVariable("HYDRA_UNSAFE", null);
 
         }
 

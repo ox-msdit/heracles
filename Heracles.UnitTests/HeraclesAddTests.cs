@@ -1,3 +1,4 @@
+using System.Net;
 namespace Heracles.UnitTests
 {
 
@@ -15,10 +16,11 @@ namespace Heracles.UnitTests
         public async Task AddWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
-            Task result() => Fixture.InvalidHydraClient.Add(Fixture.DummyRecordNoId);
+            Task Result() => Fixture.InvalidHydraClient.Add(Fixture.DummyRecordNoId);
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
         }
 
     }

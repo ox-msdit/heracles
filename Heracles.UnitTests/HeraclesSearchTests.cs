@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Heracles.UnitTests
 {
 
@@ -15,10 +17,11 @@ namespace Heracles.UnitTests
         public async Task SearchWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
-            Task result() => Fixture.InvalidHydraClient.Search("_acme-challenge");
+            Task Result() => Fixture.InvalidHydraClient.Search("_acme-challenge");
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
         }
 
         [Fact]
@@ -62,10 +65,10 @@ namespace Heracles.UnitTests
         public async Task SearchWithInvalidLimitThrowsArgumentOutOfRangeExceptionException(int x)
         {
             //Act
-            Task result() => Fixture.InvalidHydraClient.Search("_acme-challenge", x);
+            Task Result() => Fixture.InvalidHydraClient.Search("_acme-challenge", x);
 
             //Assert
-            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(result);
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(Result);
         }
 
     }

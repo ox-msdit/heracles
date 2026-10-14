@@ -181,3 +181,17 @@ done
 Each test performs an authenticated HTTPS query against the Hydra API. The tests require valid credentials in the local `env` file.
 
 The Ubuntu test containers install CA certificates before running Heracles. No .NET runtime is required.
+
+## Integration testing
+
+Integration tests run directly on the development host and require the .NET 10 SDK and access to the Hydra API.
+
+Credentials are supplied through the local `env` file. Run the following command from the repository root:
+
+```bash
+(set -a; source ./env; set +a; dotnet test)
+```
+
+The subshell exports the environment variables to the test process without modifying the current shell environment.
+
+The tests interact with the live Hydra API and may intermittently fail due to connection refusals currently under investigation.

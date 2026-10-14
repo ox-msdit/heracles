@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace Heracles.UnitTests
 {
 
@@ -15,30 +17,32 @@ namespace Heracles.UnitTests
         public async Task GetWithInvalidCredentialsThrowsHttpRequestException()
         {
             //Act
-            Task result() => Fixture.InvalidHydraClient.Get(Fixture.DummyRecord);
+            Task Result() => Fixture.InvalidHydraClient.Get(Fixture.DummyRecord);
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.Unauthorized, ex.StatusCode);
         }
 
         [Fact]
         public async Task GetWithNonExistantRecordThrowsHttpRequestException()
         {
             //Act
-            Task result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecord);
+            Task Result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecord);
 
             //Assert
-            await Assert.ThrowsAsync<HttpRequestException>(result);
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(Result);
+            Assert.Equal(HttpStatusCode.NotFound, ex.StatusCode);
         }
 
         [Fact]
         public async Task GetWithValidRecordNoIdThrowsArgumentNullException()
         {
             //Act
-            Task result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecordNoId);
+            Task Result() => Fixture.ValidHydraClient.Get(Fixture.DummyRecordNoId);
 
             //Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(result);
+            await Assert.ThrowsAsync<ArgumentNullException>(Result);
         }
 
         [Fact]

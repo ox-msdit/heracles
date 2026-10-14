@@ -35,7 +35,7 @@ namespace Heracles.Lib
             {
                 return content;
             }
-            throw new HttpRequestException($"Unexpected server response: {response.StatusCode}\n{content}");
+            throw new HttpRequestException($"Unexpected server response: {response.StatusCode}\n{content}",null, response.StatusCode);
         }
 
         /// <summary>
