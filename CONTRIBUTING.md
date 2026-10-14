@@ -1,19 +1,21 @@
 # Contributing to Heracles
 
-There are several ways you can help with the development of `heracles`.
+Contributions to `heracles` are welcome. This fork focuses on maintaining the Linux version, particularly its use with Certbot for automated DNS-01 certificate validation.
 
 ## Testing
 
-`heracles` is still a young project, and the more extensively we can test the better. Currently, it's been used fairly extensively on Windows x64, MacOS Arm and Ubuntu Linux x64. In principle, it should be completely cross platform, but it would be good to have feedback on other successful deployments.
+Heracles is an established application used in production. The Linux executable is built using .NET 10 Native AOT and has been tested on Ubuntu 18.04 through 26.04.
+
+Contributions that improve reliability, compatibility or test coverage are welcome. See the README for instructions on running the integration and Linux compatibility tests.
 
 ## Suggestions for improvement
 
-We believe that the program is largely feature-complete, but we're always open to suggestions for additional features.
+Heracles is largely feature-complete, but suggestions for improvements, particularly those addressing reliability or maintainability, are welcome.
 
 ## Improving the certificate request scripts
 
-The scrips for WinAcme and CertBot are trickier to test, especially in production. If you can find and fix bugs, or extend the scripts to enable additional functionality in either WinAcme or Certbot, we'd be very interested. We'd also be particularly interested in any contributions which enhanced error checking and/or improved the reliability of the scripts. Getting scripts in alternate languages, especially where those scripts can then be unit tested, would also be nice.
+The Certbot scripts are used in production and can be difficult to test safely. Contributions that fix bugs, improve error handling or increase reliability are particularly welcome.
 
 ## Writing unit tests
 
-If you're happy writing C#, it would be great to get better test coverage. Refactoring the code for `Heracles.Lib` or `Heracles.Console` to make it more unit-testable would also be useful.
+Additional test coverage is welcome, particularly for error handling and edge cases. Refactoring `Heracles.Lib` or `Heracles.Console` to improve testability may also be useful, provided existing functionality is preserved.

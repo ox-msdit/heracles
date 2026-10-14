@@ -23,16 +23,8 @@
 		</ItemGroup>
 		<Copy
 		  SourceFiles="@(MySourceFiles)"
-		  DestinationFolder="$(ProjectDir)/Binaries/Win-x64"
-		  Condition="$([MSBuild]::IsOSPlatform('Windows')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'"/>
-		<Copy
-		  SourceFiles="@(MySourceFiles)"
 		  DestinationFolder="$(ProjectDir)/Binaries/Linux-x64"
 		  Condition="$([MSBuild]::IsOSPlatform('Linux')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'X64'"/>
-		<Copy
-		  SourceFiles="@(MySourceFiles)"
-		  DestinationFolder="$(ProjectDir)/Binaries/OSX-arm64/"
-		  Condition="$([MSBuild]::IsOSPlatform('OSX')) AND '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'ARM64'"/>
 	</Target>
 	
 </Project>
