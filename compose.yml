@@ -13,3 +13,75 @@ services:
       - sh
       - -c
       - cp /publish/heracles /output/heracles
+
+  test-1804:
+    image: ubuntu:18.04
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/app:ro
+    env_file:
+      - env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        /app/heracles search heracles
+
+  test-2004:
+    image: ubuntu:20.04
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/app:ro
+    env_file:
+      - env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        /app/heracles search heracles
+
+  test-2204:
+    image: ubuntu:22.04
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/app:ro
+    env_file:
+      - env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        /app/heracles search heracles
+
+  test-2404:
+    image: ubuntu:24.04
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/app:ro
+    env_file:
+      - env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        /app/heracles search heracles
+
+  test-2604:
+    image: ubuntu:26.04
+    depends_on:
+      - build
+    volumes:
+      - ./Heracles.Console/Binaries/Linux-x64:/app:ro
+    env_file:
+      - env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends ca-certificates &&
+        /app/heracles search heracles

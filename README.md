@@ -156,11 +156,28 @@ This will create a native executable for the OS and architecture the code was co
 
 ## Compiling a static Linux executable
 
-A fully static Linux executable can be compiled using Docker, without installing the .NET SDK or compiler tools locally. The resulting binary has no glibc dependency and is tested against Ubuntu 18.04 and later.
+A fully static Linux executable can be compiled using Docker, without installing the .NET SDK or compiler tools locally. The resulting binary has no glibc dependency and has been tested against Ubuntu 18.04 through 26.04.
 
 1. Install Docker with the Compose plugin.
 2. Run `docker compose build && docker compose run --rm export`.
 
 The executable will be written to `Heracles.Console/Binaries/Linux-x64/heracles`.
 
-The Dockerfile uses .NET 10 Native AOT with musl and invariant globalization to produce a statically linked x86-64 executable.
+The Dockerfile uses .NET 10 Native AOT with musl, statically linked OpenSSL, and invariant globalization to produce a statically linked x86-64 executable.
+
+### Compatibility testing
+
+The executable can be tested against Ubuntu 18.04, 20.04, 22.04, 24.04, and 26.04 using Docker Compose.
+
+Run the following command after building and exporting the executable:
+
+```bash
+for version in 1804 2004 2204 2404 2604; do
+    echo "Testing Ubuntu ${version}"
+    docker compose run --rm --no-deps "test-${version}" || exit 1
+done
+```
+
+Each test performs an authenticated HTTPS query against the Hydra API. The tests require valid credentials in the local `env` file.
+
+The Ubuntu test containers install CA certificates before running Heracles. No .NET runtime is required.
