@@ -6,7 +6,7 @@ This fork focuses on Linux development and deployment. It provides a fully stati
 
 ## Getting Heracles
 
-The latest Linux executable is available in `Heracles.Console/Binaries/Linux-x64/heracles`. Alternatively, you can compile your own executable using Docker, as described below. No .NET runtime or additional libraries are required on the target system, although HTTPS requires a functioning CA certificate trust store.
+The latest Linux executable is available in Releases 👉 or from `Heracles.Console/Binaries/Linux-x64/heracles`. Alternatively, you can compile your own executable using Docker, as described below. No .NET runtime or additional libraries are required on the target system, although HTTPS requires a functioning CA certificate trust store.
 
 ## Requirements
 
